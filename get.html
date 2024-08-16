@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chaincode Query</title>
+    <style>
+        body {
+            background-color: #f3f3f3;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        form {
+            background-color: #fff;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"] {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+        }
+
+        #response {
+            background-color: #eee;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-wrap: break-word;
+        }
+    </style>
+</head>
+<body>
+    <h1>Query Asset</h1>
+    <form id="queryAssetForm">
+        <label for="assetID">Asset ID:</label>
+        <input type="text" id="assetID" name="assetID" value="Asset123"><br><br>
+
+        <label for="channelName">Channel Name:</label>
+        <input type="text" id="channelName" name="channelName" value="mychannel"><br><br>
+
+        <label for="chaincodeName">Chaincode Name:</label>
+        <input type="text" id="chaincodeName" name="chaincodeName" value="basic"><br><br>
+
+        <button type="button" onclick="queryAsset()">Query Asset</button>
+    </form>
+
+    <h1>Response:</h1>
+    <pre id="response"></pre>
+
+    <script>
+        function queryAsset() {
+            const assetID = document.getElementById('assetID').value;
+            const channelName = document.getElementById('channelName').value;
+            const chaincodeName = document.getElementById('chaincodeName').value;
+            const url = `http://localhost:3000/query?channelid=${channelName}&chaincodeid=${chaincodeName}&function=ReadAsset&args=${assetID}`;
+
+            fetch(url)
+                .then(response => response.text())
+                .then(data => {
+                    const responseElement = document.getElementById('response');
+                    responseElement.textContent = data;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+    </script>
+</body>
+</html>
